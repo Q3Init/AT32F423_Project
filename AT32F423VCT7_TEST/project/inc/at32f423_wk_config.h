@@ -143,6 +143,9 @@ extern "C" {
   /* init tmr6 function. */
   void wk_tmr6_init(void);
 
+  /* init usart1 function. */
+  void wk_usart1_init(void);
+
 /* add user code begin exported functions */
 
 /* add user code end exported functions */

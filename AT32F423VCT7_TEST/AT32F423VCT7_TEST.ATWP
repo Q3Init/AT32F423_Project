@@ -29,11 +29,20 @@
             <ParametersSub name="Period" value="999"/>
         </Parameters>
     </TMR6>
+    <USART1>
+        <Mode>
+            <ModeSub name="Mode" value="Asynchronous"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="RealBaudRate" value="115207"/>
+        </Parameters>
+    </USART1>
     <NVIC>
-        <SysTick_Handler>1;15;0</SysTick_Handler>
+        <SysTick_Handler>1;0;0</SysTick_Handler>
         <FLASH_IRQHandler>0;0;0</FLASH_IRQHandler>
         <CRM_IRQHandler>0;0;0</CRM_IRQHandler>
         <EXINT0_IRQHandler>1;0;0</EXINT0_IRQHandler>
+        <USART1_IRQHandler>1;0;0</USART1_IRQHandler>
         <TMR6_DAC_GLOBAL_IRQHandler>1;0;0</TMR6_DAC_GLOBAL_IRQHandler>
         <FPU_IRQHandler>0;0;0</FPU_IRQHandler>
     </NVIC>
@@ -87,6 +96,8 @@
         <PinSub pinname="PD13" signalname="GPIO_Output" signaltype="3"/>
         <PinSub pinname="PD14" signalname="GPIO_Output" signaltype="3"/>
         <PinSub pinname="PD15" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA9" signalname="USART1_TX" signaltype="2"/>
+        <PinSub pinname="PA10" signalname="USART1_RX" signaltype="2"/>
         <PinSub pinname="PA13" signalname="DEBUG_JTMS_SWDIO" signaltype="2"/>
         <PinSub pinname="PA14" signalname="DEBUG_JTCK_SWCLK" signaltype="2"/>
         <PinSub pinname="PA15" signalname="DEBUG_JTDI" signaltype="2"/>
@@ -95,7 +106,7 @@
     </PINInfo>
     <ProjectInfomation>
         <ProjectName>AT32F423VCT7_TEST</ProjectName>
-        <ProjectLocation>E:/outsourcing_project/雅特力AT32F423VCT7/AT32F423_TEST</ProjectLocation>
+        <ProjectLocation>E:/outsourcing_project/雅特力AT32F423VCT7/AT32F423_Project</ProjectLocation>
         <ToolchainIDE>MDK_V5</ToolchainIDE>
         <KeepUserCode>true</KeepUserCode>
         <NotUsedPinAnalog>false</NotUsedPinAnalog>

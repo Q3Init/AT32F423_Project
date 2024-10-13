@@ -103,6 +103,9 @@ int main(void)
   /* timebase config. */
   wk_timebase_init();
 
+  /* init usart1 function. */
+  wk_usart1_init();
+
   /* init exint function. */
   wk_exint_config();
 

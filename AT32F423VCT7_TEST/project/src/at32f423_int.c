@@ -43,12 +43,16 @@
 
 /* private define ------------------------------------------------------------*/
 /* add user code begin private define */
-
+#define UART_BUFFER_LEN 20
 /* add user code end private define */
 
 /* private macro -------------------------------------------------------------*/
 /* add user code begin private macro */
-
+uint8_t uart_buffer[UART_BUFFER_LEN] = {0};
+uint8_t uart_rxindex = 0;
+uint8_t uart_rxlen = 0;
+uint8_t uart_txindex = 0;
+uint8_t uart_txlen = 0;
 /* add user code end private macro */
 
 /* private variables ---------------------------------------------------------*/
@@ -63,7 +67,12 @@
 
 /* private user code ---------------------------------------------------------*/
 /* add user code begin 0 */
-
+void starttx()
+{
+  uart_txlen += uart_rxlen;
+  uart_rxlen = 0;
+  usart_interrupt_enable(USART1, USART_TDBE_INT, TRUE);
+}
 /* add user code end 0 */
 
 /* external variables ---------------------------------------------------------*/
@@ -254,6 +263,48 @@ void EXINT0_IRQHandler(void)
   /* add user code begin EXINT0_IRQ 1 */
 
   /* add user code end EXINT0_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles USART1 handler.
+  * @param  none
+  * @retval none
+  */
+void USART1_IRQHandler(void)
+{
+  /* add user code begin USART1_IRQ 0 */
+    if(usart_flag_get(USART1, USART_RDBF_FLAG) != RESET)
+    {
+        usart_flag_clear(USART1, USART_RDBF_FLAG);
+        uart_buffer[uart_rxindex++] = usart_data_receive(USART1);
+        if(uart_rxindex == UART_BUFFER_LEN)
+            uart_rxindex = 0;
+        uart_rxlen++;
+    }
+    if(usart_flag_get(USART1, USART_IDLEF_FLAG) != RESET || uart_rxlen == UART_BUFFER_LEN/2)
+    {
+        usart_flag_clear(USART1, USART_IDLEF_FLAG);
+        starttx();
+    }
+    if(usart_flag_get(USART1, USART_TDBE_FLAG) != RESET)
+    {
+        usart_flag_clear(USART1, USART_TDBE_FLAG);
+        if(uart_txlen > 0)
+        {
+            usart_data_transmit(USART1, uart_buffer[uart_txindex++]);
+            if(uart_txindex == UART_BUFFER_LEN)
+                uart_txindex = 0;
+            uart_txlen--;
+        }
+        else
+        {
+            usart_interrupt_enable(USART1, USART_TDBE_INT, FALSE);
+        }
+    }
+  /* add user code end USART1_IRQ 0 */
+  /* add user code begin USART1_IRQ 1 */
+
+  /* add user code end USART1_IRQ 1 */
 }
 
 /**
