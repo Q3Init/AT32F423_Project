@@ -266,6 +266,35 @@ void EXINT0_IRQHandler(void)
 }
 
 /**
+  * @brief  this function handles TMR4 handler.
+  * @param  none
+  * @retval none
+  */
+void TMR4_GLOBAL_IRQHandler(void)
+{
+  /* add user code begin TMR4_GLOBAL_IRQ 0 */
+  static uint16_t pwm_cnt = 0;
+  if (tmr_flag_get(TMR4, TMR_OVF_FLAG) != RESET) {
+    pwm_cnt+=1;
+    if (pwm_cnt > 1999) {
+      pwm_cnt = 0;
+    }
+    if (pwm_cnt < 1000) {
+      tmr_channel_value_set(TMR4,TMR_SELECT_CHANNEL_2,pwm_cnt);
+    } else {
+      tmr_channel_value_set(TMR4,TMR_SELECT_CHANNEL_2,2000-pwm_cnt);
+    }
+    tmr_flag_clear(TMR4,TMR_OVF_FLAG);
+  }
+  /* add user code end TMR4_GLOBAL_IRQ 0 */
+
+
+  /* add user code begin TMR4_GLOBAL_IRQ 1 */
+
+  /* add user code end TMR4_GLOBAL_IRQ 1 */
+}
+
+/**
   * @brief  this function handles USART1 handler.
   * @param  none
   * @retval none
@@ -322,7 +351,7 @@ void TMR6_DAC_GLOBAL_IRQHandler(void)
     if (time_cnt == 1000) 
     {
       time_cnt = 0;
-      gpio_bits_toggle(GPIOD,LED3_PIN);
+      gpio_bits_toggle(GPIOD,LED4_PIN);
     }
     tmr_flag_clear(TMR6,TMR_OVF_FLAG);
   }

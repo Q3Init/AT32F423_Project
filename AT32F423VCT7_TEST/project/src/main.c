@@ -112,6 +112,9 @@ int main(void)
   /* init gpio function. */
   wk_gpio_config();
 
+  /* init tmr4 function. */
+  wk_tmr4_init();
+
   /* init tmr6 function. */
   wk_tmr6_init();
 

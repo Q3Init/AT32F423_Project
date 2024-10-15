@@ -4,6 +4,6 @@
 
 void led_mainfunction(void)
 {
-    gpio_bits_toggle(GPIOD, LED1_PIN);
+    // gpio_bits_toggle(GPIOD, LED2_PIN);
 }
 

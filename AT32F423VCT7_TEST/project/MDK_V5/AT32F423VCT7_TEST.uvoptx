@@ -155,6 +155,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>sysclk_source</ItemText>
         </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pwm_cnt</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>

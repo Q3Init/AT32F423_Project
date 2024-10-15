@@ -8,7 +8,7 @@ void key_mainfunction(void)
 {
     if (key_signal == TRUE) {
         key_signal = FALSE;
-        gpio_bits_toggle(GPIOD,LED2_PIN);
+        gpio_bits_toggle(GPIOD,LED3_PIN);
     }
 }
 

@@ -117,12 +117,10 @@ extern "C" {
 /* Private defines -------------------------------------------------------------*/
 #define USER_KEY_PIN    GPIO_PINS_0
 #define USER_KEY_GPIO_PORT    GPIOA
-#define LED1_PIN    GPIO_PINS_13
-#define LED1_GPIO_PORT    GPIOD
-#define LED2_PIN    GPIO_PINS_14
-#define LED2_GPIO_PORT    GPIOD
-#define LED3_PIN    GPIO_PINS_15
+#define LED3_PIN    GPIO_PINS_14
 #define LED3_GPIO_PORT    GPIOD
+#define LED4_PIN    GPIO_PINS_15
+#define LED4_GPIO_PORT    GPIOD
 
 /* exported functions ------------------------------------------------------- */
   /* system clock config. */
@@ -139,6 +137,9 @@ extern "C" {
 
   /* init exint function. */
   void wk_exint_config(void);
+
+  /* init tmr4 function. */
+  void wk_tmr4_init(void);
 
   /* init tmr6 function. */
   void wk_tmr6_init(void);

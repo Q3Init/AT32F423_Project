@@ -182,6 +182,9 @@ void wk_periph_clock_config(void)
   /* enable gpiod periph clock */
   crm_periph_clock_enable(CRM_GPIOD_PERIPH_CLOCK, TRUE);
 
+  /* enable tmr4 periph clock */
+  crm_periph_clock_enable(CRM_TMR4_PERIPH_CLOCK, TRUE);
+
   /* enable tmr6 periph clock */
   crm_periph_clock_enable(CRM_TMR6_PERIPH_CLOCK, TRUE);
 
@@ -203,6 +206,7 @@ void wk_nvic_config(void)
 
   NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
   nvic_irq_enable(EXINT0_IRQn, 0, 0);
+  nvic_irq_enable(TMR4_GLOBAL_IRQn, 0, 0);
   nvic_irq_enable(USART1_IRQn, 0, 0);
   nvic_irq_enable(TMR6_DAC_GLOBAL_IRQn, 0, 0);
 }
@@ -226,12 +230,12 @@ void wk_gpio_config(void)
   /* add user code end gpio_config 1 */
 
   /* gpio output config */
-  gpio_bits_set(GPIOD, LED1_PIN | LED2_PIN | LED3_PIN);
+  gpio_bits_set(GPIOD, LED3_PIN | LED4_PIN);
 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-  gpio_init_struct.gpio_pins = LED1_PIN | LED2_PIN | LED3_PIN;
+  gpio_init_struct.gpio_pins = LED3_PIN | LED4_PIN;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init(GPIOD, &gpio_init_struct);
 
@@ -350,6 +354,76 @@ void wk_usart1_init(void)
   usart_interrupt_enable(USART1,USART_IDLE_INT,TRUE);
   usart_interrupt_enable(USART1,USART_RDBF_INT,TRUE);
   /* add user code end usart1_init 2 */
+}
+
+/**
+  * @brief  init tmr4 function.
+  * @param  none
+  * @retval none
+  */
+void wk_tmr4_init(void)
+{
+  /* add user code begin tmr4_init 0 */
+
+  /* add user code end tmr4_init 0 */
+
+  gpio_init_type gpio_init_struct;
+  tmr_output_config_type tmr_output_struct;
+
+  gpio_default_para_init(&gpio_init_struct);
+
+  /* add user code begin tmr4_init 1 */
+
+  /* add user code end tmr4_init 1 */
+
+  /* configure the tmr4 CH2 pin */
+  gpio_init_struct.gpio_pins = GPIO_PINS_13;
+  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
+  gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+  gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
+  gpio_init(GPIOD, &gpio_init_struct);
+
+  gpio_pin_mux_config(GPIOD, GPIO_PINS_SOURCE13, GPIO_MUX_2);
+
+  /* configure counter settings */
+  tmr_base_init(TMR4, 999, 149);
+  tmr_cnt_dir_set(TMR4, TMR_COUNT_UP);
+  tmr_clock_source_div_set(TMR4, TMR_CLOCK_DIV1);
+  tmr_period_buffer_enable(TMR4, FALSE);
+
+  /* configure primary mode settings */
+  tmr_sub_sync_mode_set(TMR4, FALSE);
+  tmr_primary_mode_select(TMR4, TMR_PRIMARY_SEL_RESET);
+
+  /* configure channel 2 output settings */
+  tmr_output_struct.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_A;
+  tmr_output_struct.oc_output_state = TRUE;
+  tmr_output_struct.occ_output_state = FALSE;
+  tmr_output_struct.oc_polarity = TMR_OUTPUT_ACTIVE_HIGH;
+  tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
+  tmr_output_struct.oc_idle_state = FALSE;
+  tmr_output_struct.occ_idle_state = FALSE;
+  tmr_output_channel_config(TMR4, TMR_SELECT_CHANNEL_2, &tmr_output_struct);
+  tmr_channel_value_set(TMR4, TMR_SELECT_CHANNEL_2, 0);
+  tmr_output_channel_buffer_enable(TMR4, TMR_SELECT_CHANNEL_2, FALSE);
+
+  tmr_output_channel_immediately_set(TMR4, TMR_SELECT_CHANNEL_2, FALSE);
+
+
+  tmr_counter_enable(TMR4, TRUE);
+
+  /**
+   * Users need to configure TMR4 interrupt functions according to the actual application.
+   * 1. Call the below function to enable the corresponding TMR4 interrupt.
+   *     --tmr_interrupt_enable(...)
+   * 2. Add the user's interrupt handler code into the below function in the at32f423_int.c file.
+   *     --void TMR4_GLOBAL_IRQHandler(void)
+   */
+
+  /* add user code begin tmr4_init 2 */
+  tmr_interrupt_enable(TMR4,TMR_OVF_INT,TRUE);
+  /* add user code end tmr4_init 2 */
 }
 
 /**
