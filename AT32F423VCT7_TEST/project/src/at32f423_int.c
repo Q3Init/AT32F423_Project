@@ -177,7 +177,6 @@ void UsageFault_Handler(void)
   * @param  none
   * @retval none
   */
-#if 0
 void SVC_Handler(void)
 {
   /* add user code begin SVCall_IRQ 0 */
@@ -187,7 +186,6 @@ void SVC_Handler(void)
 
   /* add user code end SVCall_IRQ 1 */
 }
-#endif
 
 /**
   * @brief  this function handles debug monitor exception.
@@ -209,7 +207,6 @@ void DebugMon_Handler(void)
   * @param  none
   * @retval none
   */
-#if 0
 void PendSV_Handler(void)
 {
   /* add user code begin PendSV_IRQ 0 */
@@ -219,7 +216,6 @@ void PendSV_Handler(void)
 
   /* add user code end PendSV_IRQ 1 */
 }
-#endif
 
 /**
   * @brief  this function handles systick handler.

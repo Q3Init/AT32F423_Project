@@ -36,8 +36,10 @@ __heap_limit
                 AREA    RESET, DATA, READONLY
                 EXPORT  __Vectors
                 EXPORT  __Vectors_End
-                EXPORT  __Vectors_Size
-
+                EXPORT  __Vectors_Size       
+                IMPORT  vPortSVCHandler
+                IMPORT  xPortPendSVHandler
+                
 __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     Reset_Handler                       ; Reset Handler
                 DCD     NMI_Handler                         ; NMI Handler
@@ -49,10 +51,12 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
                 DCD     0                                   ; Reserved
-                DCD     SVC_Handler                         ; SVCall Handler
+                ;DCD     SVC_Handler                         ; SVCall Handler
+                DCD     vPortSVCHandler
                 DCD     DebugMon_Handler                    ; Debug Monitor Handler
                 DCD     0                                   ; Reserved
-                DCD     PendSV_Handler                      ; PendSV Handler
+                ;DCD     PendSV_Handler                      ; PendSV Handler
+                DCD     xPortPendSVHandler
                 DCD     SysTick_Handler                     ; SysTick Handler
 
                 ; External Interrupts
